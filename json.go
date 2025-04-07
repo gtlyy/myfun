@@ -3,14 +3,13 @@ package myfun
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 )
 
 // ReadJSONFile 通用函数，用于读取 JSON 文件并解析数据到指定的结构体类型
 func ReadJSONFile(filePath string, data interface{}) error {
 	// 读取文件内容
-	fileData, err := ioutil.ReadFile(filePath)
+	fileData, err := os.ReadFile(filePath)
 	if err != nil {
 		return fmt.Errorf("无法读取文件: %s", err)
 	}
