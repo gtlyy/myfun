@@ -5,4 +5,4 @@ Some functions for go.
 go get github.com/gtlyy/myfun@v0.0.2
 
 ## Licence
-GNU GENERAL PUBLIC LICENSE Version 3
+MIT License - see LICENSE for more details
