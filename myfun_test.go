@@ -1,6 +1,7 @@
 package myfun
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -77,4 +78,54 @@ func TestIn(t *testing.T) {
 	strArray := []string{"apple", "banana", "cherry", "date"}
 	target := "banana"
 	assert.True(t, In(target, strArray))
+}
+
+// 测试：实现三目运算：a == b ? c : d
+func TestT3O(t *testing.T) {
+	type testStruct struct{ field int }
+
+	tests := []struct {
+		name      string
+		condition bool
+		trueVal   interface{}
+		falseVal  interface{}
+		want      interface{}
+	}{
+		{"true returns int", true, 42, 0, 42},
+		{"false returns string", false, "apple", "banana", "banana"},
+		{"true with nil", true, nil, "not-nil", nil},
+		{"false with nil", false, "not-nil", nil, nil},
+		{"different types", true, 3.14, "pi", 3.14},
+		{"struct comparison", true, testStruct{5}, testStruct{10}, testStruct{5}},
+		{"pointer comparison",
+			true,
+			&testStruct{7},
+			&testStruct{9},
+			&testStruct{7}},
+		{"typed nil pointer",
+			false,
+			(*testStruct)(nil),
+			(*testStruct)(nil),
+			(*testStruct)(nil)},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := T3O(tt.condition, tt.trueVal, tt.falseVal)
+
+			// 特殊处理nil比较
+			if tt.want == nil {
+				if got != nil {
+					t.Errorf("expected nil, got %v (%T)", got, got)
+				}
+				return
+			}
+
+			// 使用反射处理复杂类型比较
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("T3O() = %v (%T), want %v (%T)",
+					got, got, tt.want, tt.want)
+			}
+		})
+	}
 }
