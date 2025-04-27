@@ -1,5 +1,5 @@
 // 功能：实现一个广播器
-package main
+package myfun
 
 import (
 	"fmt"
